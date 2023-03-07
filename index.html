@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>HEllo, Protocol</h1>
+  <button onclick="fetchData()">백엔드 통신버튼</button>
+
+</body>
+<script>
+  const headerEl = document.querySelector('h1');
+
+  function fetchData() {
+    fetch('http://localhost:4000') //4000번으로 데이터 요청
+      .then(function (res) {   //응답을 받게 되면
+        return res.json();   //json 형태의 js 로받고,
+      })
+      .then(function (data) {
+        headerEl.innerHTML = data;  //innerHTML 으로 받아오겠음
+      })
+  }
+</script>
+
+</html>
