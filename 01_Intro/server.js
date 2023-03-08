@@ -9,8 +9,8 @@ const app = express(); //express 를 실행해서 넣어줌
 app.use(cors()); //use : 필요한 모듈을 쓰는것 여기서는 cors 라는 package를 쓰겠다는 뜻
 
 app.use('/', (req, res) => {
-  const str = '안녕하세요 여기는 백엔드 입니다!'; //응답
-  // const json = JSON.stringify(str); //문자열을 json 형태로 변경
+  const str = 'Hello, here is back-end! 한글도 보낸다!'; //응답
+  const json = JSON.stringify(str); //문자열을 json 형태로 변경
   // res.send(json);
   res.send(str);
 });

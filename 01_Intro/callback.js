@@ -26,4 +26,4 @@ function pay(total) {
 // const totalMoney = buySync('포켓몬빵', 1000, 5); //1
 
 // pay(totalMoney); //3
-buySync('포켓몬빵', 1000, 5, pay);
+buySync('포켓몬빵', 1000, 5, pay); //pay 함수를 callback 으로 받을거고
