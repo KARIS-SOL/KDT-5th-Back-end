@@ -1,5 +1,5 @@
 const promise = new Promise(function (resolve, reject) {
-  const tetz = 'old'; //older 로 바꿔주면 3초 안기다려주고 바로 reject 가 뜸
+  const tetz = 'old'; // older 로 바꿔주면 3초 안기다려주고 바로 reject 가 뜸
 
   if (tetz === 'old') {
     setTimeout(function () {

@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-  res.send('api 요청이 접수되었습니다!'); //이미 위에서 id 값이 있기때문에 여기서 api 는 parameter 로 받는데 꼭 /: 이 있어야 api 랑 안겹침
+  res.send('api 요청이 접수되었습니다!'); // 이미 위에서 id 값이 있기때문에 여기서 api 는 parameter 로 받는데 꼭 /: 이 있어야 api 랑 안겹침
 });
 app.listen(PORT, () => {
   console.log(`${PORT} 번 실행중`);

@@ -25,5 +25,5 @@ async function howMuch() {
   console.log(result);
 } // 함수선언
 
-//함수 실행
+// 함수 실행
 howMuch();
