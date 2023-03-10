@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/main.js"></script>
+
+  <title>Posts Service</title>
+</head>
+
+<body>
+  <a href="/">홈으로</a>
+  <h1>Hello, POST World!</h1>
+  <h1>POST</h1>
+  <h2>
+    총 POST 수 <%= postCounts%>
+  </h2>
+  <ul>
+    <% if(postCounts> 0) { %>
+    <% for (let i=0; i < postCounts; i++) { %>
+    <li>
+      <p>
+        TITLE : <%= POSTS[i].title%>
+      </p>
+      <p>
+        CONTENT : <%= POSTS[i].content%>
+      </p>
+    </li>
+    <%}%>
+          <%} else {%>
+    <li> POST정보가 없습니다!</li>
+    <% }%>
+
+  </ul>
+
+  <form action="/posts/add" method="posts">
+    <div>
+      <label>타이틀</label>
+      <input type="text" name="title" />
+    </div>
+    <div>
+      <label>콘텐츠</label>
+      <input type="text" name="content" />
+    </div>
+    <button type="submit">제출</button>
+  </form>
+
+
+</body>
+
+</html>

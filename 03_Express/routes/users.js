@@ -1,16 +1,8 @@
-// @ts-check
 const express = require('express');
 
 const router = express.Router();
 
-const USER = {
-  1: {
-    id: 'karis',
-    name: '백진솔',
-  },
-};
-
-const USER_ARR = [
+const USER = [
   {
     id: 'karis',
     name: '백진솔',
@@ -29,7 +21,7 @@ const USER_ARR = [
 
 router.get('/', (req, res) => {
   // res.send(USER);
-  res.render('users', { USER_ARR, userCounts: USER_ARR.length });
+  res.render('users', { USER, userCounts: USER.length });
 });
 // 저 아이디를 가진 회원정보는 여기
 // router.get('/id/:id', (req, res) => {
@@ -38,30 +30,101 @@ router.get('/', (req, res) => {
 
 // params로 받는 API
 router.get('/id/:id', (req, res) => {
-  const userData = USER[req.params.id];
+  const userData = USER.find((user) => user.id === req.params.id);
   if (userData) {
     res.send(userData);
   } else {
-    res.send('ID를 못찾겠어요');
+    // res.send('ID를 못찾겠어요');
+    // error 만들기
+    const err = new Error('해당 ID 를 가진 회원이 없습니다!');
+    err.statusCode = 404;
+    throw err;
   }
 });
+
 // get 방식은 server에 변화가 보통 없기 때문에 create가 가능한post 로 method 설정
 // router.post('/add', (req, res) => {
 //   res.send('회원등록');
 // });
-
 router.post('/add', (req, res) => {
-  if (!req.query.id || !req.query.name) {
-    return res.send('쿼리 입력이 잘못되었습니다!');
-  }
+  // console.log(req.body);
+  if (Object.keys(req.query).length >= 1) {
+    if (req.query.id && req.query.name && req.query.email) {
+      const newUser = {
+        id: req.query.id,
+        name: req.query.name,
+        email: req.query.email,
+      };
 
-  const newUser = {
-    id: req.query.id,
-    name: req.query.name,
-  };
-  USER[Object.keys(USER).length + 1] = newUser;
-  res.send('회원등록 완료');
+      USER.push(newUser);
+
+      res.redirect('/users');
+    } else {
+      // res.send('쿼리 입력이 잘못되었습니다');
+      const err = new Error('쿼리 입력이 잘못되었습니다');
+      err.statusCode = 402;
+      throw err;
+    }
+  } else if (req.body) {
+    if (req.body.id && req.body.name && req.body.email) {
+      const newUser = {
+        id: req.body.id,
+        name: req.body.name,
+        email: req.body.email,
+      };
+
+      USER.push(newUser);
+
+      res.redirect('/users');
+    } else {
+      // res.send('쿼리 입력이 잘못되었습니다');
+      const err = new Error('폼태그 입력을 확인');
+      err.statusCode = 402;
+      throw err;
+    }
+  } else {
+    const err = new Error('데이터가 입력 되지않았습니다');
+    err.statusCode = 402;
+    throw err;
+  }
 });
+
+// 수정
+router.put('/modify/:id', (req, res) => {
+  if (req.query.email && req.query.name) {
+    const userIndex = USER.findIndex((user) => user.id === req.params.id);
+    if (userIndex !== -1) {
+      USER[userIndex] = {
+        id: req.params.id,
+        name: req.query.name,
+        email: req.query.email,
+      };
+      res.send('회원정보 수정완료');
+    } else {
+      // res.send('해당 ID를 가진회원이 존재하지않습니다');
+      const err = new Error('해당 ID를 가진 회원이 존재하지 않습니다');
+      err.statusCode = 404;
+      throw err;
+    }
+  } else {
+    res.send('잘못 된 쿼리 입력입니다');
+  }
+});
+
+// 삭제
+router.delete('/delete/:id', (req, res) => {
+  const userIndex = USER.findIndex((user) => user.id === req.params.id);
+  if (userIndex !== -1) {
+    USER.splice(userIndex, 1);
+    res.send('회원 삭제 완료');
+  } else {
+    // res.send('해당 ID를 가진회원이 존재하지않습니다');
+    const err = new Error('해당 ID를 가진 회원이 존재하지 않습니다');
+    err.statusCode = 404;
+    throw err;
+  }
+});
+
 //   if (req.query.id && req.query.name) {
 //     const newUser = {
 //       id: req.query.id,
@@ -81,16 +144,16 @@ router.get('/show', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
   res.write('<h1>Hello, Dynamic Web Page </h1>');
 
-  for (let i = 0; i < USER_ARR.length; i++) {
-    res.write(`<h2>USER ID is ${USER_ARR[i].id}</h2>`);
-    res.write(`<h2>USER NAME is ${USER_ARR[i].name}</h2>`);
+  for (let i = 0; i < USER.length; i++) {
+    res.write(`<h2>USER ID is ${USER[i].id}</h2>`);
+    res.write(`<h2>USER NAME is ${USER[i].name}</h2>`);
   }
   res.end();
 });
 
 // router.get('/ejs', (req, res) => {
-//   const userCounts = USER_ARR.length;
-//   res.render('index', { USER_ARR, userCounts }); //app setting 에서 해줬으니깐 index.ejs 를 index로 표기가능
+//   const userCounts = USER.length;
+//   res.render('index', { USER, userCounts }); //app setting 에서 해줬으니깐 index.ejs 를 index로 표기가능
 // });
 
 module.exports = router;
